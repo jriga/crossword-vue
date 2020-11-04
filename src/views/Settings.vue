@@ -1,6 +1,6 @@
 <template>
 <van-row id="settings" justify="center">
-  <van-col span="15">
+  <van-col span="20">
   <van-field name="stepper" label="Grid size">
     <template #input>
       <van-stepper v-model="size"

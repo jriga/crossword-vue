@@ -1,17 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Crossword" src="../assets/logo.svg"/>
-    <div class="next-game">
-      <router-link :to="{name: 'Crossword'}"><h2>Level {{level}}</h2></router-link>
-    </div>
-    <div class="add-container"></div>
+    <h1>Crosswords</h1>
+
+    <van-button plain
+                hairline
+                type="primary"
+                icon="apps"
+                color="#7232dd"
+                :to="{name: 'Crossword'}">Level {{level}}</van-button>
+
   </div>
 </template>
 
 <script>
+import { Button, Icon } from 'vant'
+
 export default {
   name: 'Home',
-  components: {},
+  components: {
+    'van-icon': Icon,
+    'van-button': Button
+  },
   data() {
     return { }
   },
@@ -27,11 +36,5 @@ export default {
 </script>
 
 <style scoped>
-.next-game {
-  margin: 20px auto;
-  border: 5px solid black;
-  width: 100px;
-  border-radius: 12px;
-  background: white;
-}
+
 </style>

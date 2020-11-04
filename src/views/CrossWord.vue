@@ -1,6 +1,6 @@
 <template>
   <van-row id="crossword" justify="center">
-    <van-col span="20">
+    <van-col span="24">
       <table id='grid' :style="tableStyle">
         <tbody>
           <tr v-for="y in board.grid" v-bind:key="y">
@@ -11,7 +11,7 @@
     </van-col>
   </van-row>
 
-  <van-row class="van-hairline--top" justify="center">
+  <van-row justify="center">
     <van-col span="12">
     
     <ul v-if="showWords">
@@ -42,12 +42,13 @@ export default {
     }
   },
   mounted() {
-    const dim = ((900 - 500) / (20 - 12)) * this.$store.getters.size / 1.5 + 100
-    const fs = ((1.2 - 2) / (12 - 20)) * this.$store.getters.size / 1.5 + 1
+    const odim = ((900 - 500) / (20 - 12)) / this.$store.getters.size / 1.5 + 100
+    const dim = Math.ceil((window.innerWidth - 50) * 0.7 )
+
     this.tableStyle = {
       width: dim + "px",
       height: dim + "px",
-      fontSize: fs + "em"
+      fontSize: 1.2 + "rem"
     }
   },
   computed: mapState([
@@ -137,26 +138,27 @@ export default {
 }
 </script>
 
-<style>
-#crossword {
-    width: 100%;
-    padding: 2em;
+<style scoped>
+.van-col--24 {
+  margin: 30px 0;
+}
+table {
+  margin: 0 auto;
+  padding: 10px;
+  background: floralwhite;
+  color: black;
+  border-radius: 12px;
 }
 
-#crossword table {
-   background-color: wheat;
-   margin: 0 auto;
-   border-radius: 12px
-}
-#crossword table td {
-    width: 7em;
-    text-align: center;
-}
-#crossword .active {
-    background: #ecf0c0;
+td {
+  padding: 0;
 }
 
-#crossword .found {
-    background: #b1e6aa;
+td.active {
+   background: #ecf0c0;
+}
+
+td.found {
+   background: #b1e6aa;
 }
 </style>

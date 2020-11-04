@@ -1,9 +1,13 @@
 <template>
   <nav id="nav">
     <van-row justify="center">
-      <van-col span="4">    <router-link :to="{name: 'Home'}">Home</router-link> </van-col>
-      <van-col span="4">{{coins}}</van-col>
-      <van-col span="4"><router-link :to="{name: 'Settings'}"><van-icon name="setting" /></router-link></van-col>
+      <van-col span="5">    <router-link :to="{name: 'Home'}">Home</router-link> </van-col>
+      <van-col span="5">{{coins}}</van-col>
+      <van-col span="5">
+        <router-link :to="{name: 'Settings'}">
+          <van-icon name="setting-o" color="whitesmoke"/>
+        </router-link>
+      </van-col>
     </van-row>
   </nav>
   <div class="van-hairline--top"></div>
@@ -32,18 +36,9 @@ export default {
 
 <style scoped>
 #nav {
-  display: block;
-  align-items: center;
-  padding: 30px;
+  padding: 40px 0 20px;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-  padding: 0 10px;
-}
-
-#nav a.router-link-exact-active {
-  color: #4201FD;
+#nav a.router-link-exact-active, #nav a {
+    color: whitesmoke;
 }
 </style>
