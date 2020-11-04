@@ -1,12 +1,79 @@
+import 'es6-promise/auto'
 import { createStore } from 'vuex'
+import * as b from '@/assets/js/crossword.js'
+import api from '@/api'
 
-export default createStore({
-  state: {
+const initState = {
+  level: 1,
+  size: 9,
+  showWords: true,
+  board: {
+    grid: [],
+    words: []
   },
-  mutations: {
+  coins: 0
+}
+
+const getters = {
+  level: state => { return state.level },
+  size: state => { return state.size },
+  showWords: state => { return state.showWords },
+  grid: state => { return state.board.grid },
+  words: state => { return state.board.words },
+  coins: state => { return state.coins },
+}
+
+const actions = {
+  updateBoard (context) {
+    const s = context.getters.size
+    const url = "http://localhost:5000/request?max=" + s + "&min=3&limit="+ (s * 2)
+    api.fetchWords(url, words => {
+      b
+      const board = window.crossword.core.create(words, {"max-length": s})
+      board.words = board.words.map(o => {
+        o.found = false
+        o.style = {textDecoration: "unset"}
+        return o
+      })
+      context.commit('updateBoard', board) 
+    })
   },
-  actions: {
+  incLevel (context) {
+    context.commit('incLevel');
   },
-  modules: {
+  incCoins (context) {
+    context.commit('incCoins');
   }
-})
+}
+
+const mutations = {
+  updateSize(state, size) {
+    state.size = parseInt(size)
+  },
+  updateShowWords(state, bool) {
+    state.showWords = bool
+  },
+  incLevel(state) {
+    state.level++
+  },
+  incCoins(state) {
+    state.coins++
+  },
+  decCoins(state) {
+    state.coins--
+  },
+  updateBoard(state, board) {
+    state.board = board
+  }
+}
+
+const store = createStore({
+  state () {
+    return initState;
+  },
+  getters,
+  actions,
+  mutations
+});
+
+export default store

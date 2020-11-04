@@ -1,18 +1,37 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Crossword" src="../assets/logo.svg"/>
+    <div class="next-game">
+      <router-link :to="{name: 'Crossword'}"><h2>Level {{level}}</h2></router-link>
+    </div>
+    <div class="add-container"></div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  components: {},
+  data() {
+    return { }
+  },
+  mounted () {
+    if (this.$store.getters.words.length == 0) {
+      this.$store.dispatch('updateBoard');
+    }
+  },
+  computed: {
+    level () { return this.$store.state.level; }
   }
 }
 </script>
+
+<style scoped>
+.next-game {
+  margin: 20px auto;
+  border: 5px solid black;
+  width: 100px;
+  border-radius: 12px;
+  background: white;
+}
+</style>
