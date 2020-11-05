@@ -95,10 +95,24 @@ export default {
         li[0].dispatchEvent(event)
       }
 
+      const play = function(path, delay) {
+        if (store.getters.fx) {
+          setTimeout(function() {
+            const audio = new Audio(path);
+            audio.volume = 0.5;
+            audio.addEventListener("canplay", event => {
+              audio.play();
+            });
+          }, delay)
+        }
+      }
+      const store = this.$store;
+
       this.coord.push(
         [event.target.cellIndex,
          event.target.parentElement.rowIndex])
       event.target.classList.add("active")
+      play("/fx/blop.wav", this.$store)
 
       if (this.coord.length == 2) {
         const wordSeq = findWord(this.coord)
@@ -108,6 +122,7 @@ export default {
           wordSeq.forEach(function(e){
             e.classList.remove("active");
             e.classList.add("found");
+            play("/fx/woosh.wav", 200)
           })
         }else{
           // when word exists in dict add has bonus

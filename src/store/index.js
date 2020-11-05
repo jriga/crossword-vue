@@ -11,7 +11,10 @@ const initState = {
     grid: [],
     words: []
   },
-  coins: 0
+  coins: 0,
+  sounds: {
+    fx: true
+  }
 }
 
 const getters = {
@@ -21,6 +24,7 @@ const getters = {
   grid: state => { return state.board.grid },
   words: state => { return state.board.words },
   coins: state => { return state.coins },
+  fx: state => { return state.sounds.fx },
 }
 
 const actions = {
@@ -52,6 +56,9 @@ const mutations = {
   },
   updateShowWords(state, bool) {
     state.showWords = bool
+  },
+  updateSoundsFx(state, bool) {
+    state.sounds.fx = bool
   },
   incLevel(state) {
     state.level++

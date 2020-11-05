@@ -16,6 +16,11 @@
       <van-switch v-model="showWords" size="20" />
     </template>
   </van-field>
+  <van-field name="switch" label="Play Fx sound">
+    <template #input>
+      <van-switch v-model="playFx" size="20" />
+    </template>
+  </van-field>
   </van-col>
 </van-row>
 </template>
@@ -54,6 +59,14 @@ export default {
       },
       set (value) {
         this.$store.commit('updateShowWords', value)
+      }
+    },
+    playFx: {
+      get () {
+        return this.$store.state.sounds.fx
+      },
+      set (value) {
+        this.$store.commit('updateSoundsFx', value)
       }
     }
   },
