@@ -1,13 +1,19 @@
 <template>
-  <van-row id="crossword" justify="center">
-    <van-col span="24">
-      <table id='grid' :style="tableStyle">
-        <tbody>
-          <tr v-for="y in board.grid" v-bind:key="y">
-            <td v-for="x in y" v-bind:key="x" @click="highlight">{{x}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <van-row justify="center">
+    <van-col span="22">
+
+      <div id="grid">
+        <div class="row" v-for="y in board.grid" v-bind:key="y">
+          <div class="col"
+               :class="col"
+               v-for="x in y"
+               v-bind:key="x"
+               @click="highlight">
+            {{x}}
+          </div>
+        </div>
+     </div>
+
     </van-col>
   </van-row>
 
@@ -18,7 +24,8 @@
       <li v-for="word in board.words"
           v-bind:key="word.pattern"
           :style="word.style"
-          @found="found">{{word.pattern}}</li>
+          @found="found"
+          class="word">{{word.pattern}}</li>
     </ul>
     </van-col>
   </van-row>
@@ -31,11 +38,6 @@ export default {
   name: 'CrossWord',
   data() {
     return {
-      margin: 100,
-      tableStyle: {
-        width: "70%",
-        fontSize: "1.1em"
-      },
       activeSearch: [],
       coord: [],
       restart: false
@@ -51,11 +53,16 @@ export default {
       fontSize: 1.2 + "rem"
     }
   },
-  computed: mapState([
+  computed: {
+    col () {
+      return "col-" + this.$store.getters.size;
+    },
+    ...mapState([
     'board',
     'words',
     'showWords'
-  ]),
+  ])
+  },
   methods: {
     highlight(event) {
       const verify = function (wordSeq, words) {
@@ -154,26 +161,223 @@ export default {
 </script>
 
 <style scoped>
-.van-col--24 {
-  margin: 30px 0;
+#grid {
+  margin: 1rem auto;
 }
-table {
-  margin: 0 auto;
-  padding: 10px;
-  background: floralwhite;
-  color: black;
-  border-radius: 12px;
-}
-
-td {
-  padding: 0;
-}
-
-td.active {
+.active {
    background: #ecf0c0;
 }
 
-td.found {
+.found {
    background: #b1e6aa;
 }
+.word {
+  display: inline-block;
+  padding: 0 5px;
+  margin: 5px;
+  background: #a29ea3;
+  border-radius: 6px;
+}
+
+#grid {
+  margin: 2rem auto;
+  border-radius: 12px;
+  color: black;
+  background: whitesmoke;
+  padding: 15px;
+  border: solid 10px grey;
+  max-width: fit-content;
+}
+.row{
+  margin: 0;
+  padding: 0;
+}
+.col {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 320.99999px) {
+  #grid {
+    margin: 1rem auto;
+    padding: 10px;
+  }
+  .col{
+    width: 1.4rem;
+    font-size: 1.4rem;
+  }
+  .col-9 {
+    width: 1.3rem;
+    font-size: 1.4rem;
+  }
+  .col-10 {
+    width: 1.2rem;
+    font-size: 1.2rem;
+  }
+  .col-11 {
+    width: 1.1rem;
+    font-size: 1.2rem;
+  }
+  .col-12 {
+    width: 1rem;
+    font-size: 1.1rem;
+  }
+  .col-13 {
+    width: 0.93rem;
+    font-size: 0.95rem;
+  }
+  .col-14 {
+    width: 0.85rem;
+    font-size: 0.9rem;
+  }
+  .col-15 {
+    width: 0.81rem;
+    font-size: 0.85rem;
+  }
+  .col-16 {
+    width: 0.76rem;
+    font-size: 0.8rem;
+  }
+  .col-17 {
+    width: 0.73rem;
+    font-size: 0.85rem;
+  }
+  .col-18 {
+    width: 0.7rem;
+    font-size: 0.8rem;
+  }
+  .col-19 {
+    width: 0.65rem;
+    font-size: 0.78rem;
+  }
+  .col-20 {
+    width: 0.63rem;
+    font-size: 0.79rem;
+  }
+}
+
+@media (min-width: 322px) and (max-width: 414.99999px) {
+  #grid {
+    margin: 1.3rem auto;
+    padding: 10px;
+  }
+  .col{
+    width: 1.6rem;
+    font-size: 1.6rem;
+  }
+  .col-9 {
+    width: 1.4rem;
+    font-size: 1.4rem;
+  }
+  .col-10 {
+    width: 1.3rem;
+    font-size: 1.3rem;
+  }
+  .col-11 {
+    width: 1.25rem;
+    font-size: 1.3rem;
+  }
+  .col-12 {
+    width: 1.15rem;
+    font-size: 1.2rem;
+  }
+  .col-13 {
+    width: 1.05rem;
+    font-size: 1.1rem;
+  }
+  .col-14 {
+    width: 0.95rem;
+    font-size: 1rem;
+  }
+  .col-15 {
+    width: 0.93rem;
+    font-size: 1.05rem;
+  }
+  .col-16 {
+    width: 0.83rem;
+    font-size: 0.9rem;
+  }
+  .col-17 {
+    width: 0.81rem;
+    font-size: 0.85rem;
+  }
+  .col-18 {
+    width: 0.77rem;
+    font-size: 0.8rem;
+  }
+  .col-19 {
+    width: 0.73rem;
+    font-size: 0.78rem;
+  }
+  .col-20 {
+    width: 0.7rem;
+    font-size: 0.79rem;
+  }
+}
+
+@media (min-width: 415px) and (max-width: 1024.99999px) {
+  #grid {
+    margin: 1.3rem auto;
+    padding: 10px;
+  }
+  .col{
+    width: 1.9rem;
+    font-size: 1.6rem;
+  }
+  .col-7 {
+    width: 1.6rem;
+  }
+  .col-8 {
+    width: 1.6rem;
+  }
+  .col-9 {
+    width: 1.7rem;
+  }
+  .col-10 {
+    width: 1.8rem;
+  }
+  .col-18 {
+    width: 1.7rem;
+  }
+  .col-19 {
+    width: 1.7rem;
+  }
+  .col-20 {
+    width: 1.65rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  #grid {
+    margin: 2rem auto;
+    padding: 15px;
+  }
+  .col{
+    width: 1.9rem;
+    font-size: 1.6rem;
+  }
+  .col-7 {
+    width: 1.6rem;
+  }
+  .col-8 {
+    width: 1.6rem;
+  }
+  .col-9 {
+    width: 1.7rem;
+  }
+  .col-10 {
+    width: 1.8rem;
+  }
+  .col-18 {
+    width: 1.7rem;
+  }
+  .col-19 {
+    width: 1.7rem;
+  }
+  .col-20 {
+    width: 1.65rem;
+  }
+}
+
 </style>
