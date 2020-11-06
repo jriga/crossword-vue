@@ -14,6 +14,7 @@
 
 <script>
 import { Button, Icon } from 'vant'
+import snd from '@/plugins/sound.js'
 
 export default {
   name: 'Home',
@@ -25,6 +26,7 @@ export default {
     return { }
   },
   mounted () {
+    snd.playMsc(this.$store, '/snd/home.wav');
     if (this.$store.getters.words.length == 0) {
       this.$store.dispatch('updateBoard');
     }

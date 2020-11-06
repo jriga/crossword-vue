@@ -1,5 +1,6 @@
 <template>
-<van-row id="settings" justify="center">
+<div id="settings">
+<van-row justify="center">
   <van-col span="20">
   <van-field name="stepper" label="Grid size">
     <template #input>
@@ -21,24 +22,37 @@
       <van-switch v-model="playFx" size="20" />
     </template>
   </van-field>
+  <van-field name="slider" label="Music Volume">
+    <template #input>
+      <van-slider v-model="musicVol" :min="vol.min" :max="vol.max" :step="vol.step"/>
+    </template>
+  </van-field>
   </van-col>
 </van-row>
+</div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import lodash from 'lodash'
-import { Field, Switch, Stepper } from 'vant';
+import { Field, Switch, Stepper, Slider } from 'vant';
+import snd from '@/plugins/sound.js'
 
 export default {
   name: 'Settings',
   components: {
     'van-field': Field,
     'van-switch': Switch,
-    'van-stepper': Stepper
+    'van-stepper': Stepper,
+    'van-slider': Slider
   },
   data () {
     return {
+      vol: {
+        min: 0,
+        max: 1,
+        step: 0.1
+      },
       minGrid: 7,
       maxGrid: 20,
       options: [7,9,12,14,16,20]
@@ -68,6 +82,15 @@ export default {
       set (value) {
         this.$store.commit('updateSoundsFx', value)
       }
+    },
+    musicVol: {
+      get () {
+        return this.$store.state.sounds.musicVol
+      },
+      set (value) {
+        this.$store.commit('updateSoundsMusicVol', value)
+        snd.audioPlayer.volume = value;
+      }
     }
   },
   methods: {
@@ -80,7 +103,10 @@ export default {
 
 <style scoped>
 #settings{
-    margin: 0 auto;
-
+ margin: 1rem auto;
+ padding: 10px;
+ border-radius: 12px;
+ background: white;
+ width: 85%;
 }
 </style>

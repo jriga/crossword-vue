@@ -13,7 +13,8 @@ const initState = {
   },
   coins: 0,
   sounds: {
-    fx: true
+    fx: true,
+    musicVol: 0.2
   }
 }
 
@@ -25,6 +26,7 @@ const getters = {
   words: state => { return state.board.words },
   coins: state => { return state.coins },
   fx: state => { return state.sounds.fx },
+  musicVol: state => { return state.sounds.musicVol }
 }
 
 const actions = {
@@ -59,6 +61,9 @@ const mutations = {
   },
   updateSoundsFx(state, bool) {
     state.sounds.fx = bool
+  },
+  updateSoundsMusicVol(state, value) {
+    state.sounds.musicVol = value
   },
   incLevel(state) {
     state.level++
