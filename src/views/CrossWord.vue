@@ -2,10 +2,12 @@
   <van-row justify="center">
     <van-col span="22">
       <div id="grid">
-        <div class="row" v-for="y in board.grid" v-bind:key="y">
+        <div class="row" v-for="(y, yi) in board.grid" v-bind:key="y">
           <div class="col"
                :class="colClass"
-               v-for="x in y"
+               :data-x="xi"
+               :data-y="yi"
+               v-for="(x, xi) in y"
                v-bind:key="x"
                @click="highlight">
             {{x}}
@@ -52,7 +54,6 @@ export default {
     ])
   },
   mounted() {
-    console.log('------> ', snd.selectMusic(this.$store.getters.level), this.$store.getters.level)
     snd.playMsc(this.$store, snd.selectMusic(this.$store.getters.level))
  },
   methods: {
@@ -65,25 +66,31 @@ export default {
       const findWord = function(coords){
         const range = function(start, end) {
           var r = []
-          for (var i= start; i <= end; i++) { r.push(i) }
+          for (var i= parseInt(start); i <= parseInt(end); i++) { r.push(i.toString()) }
           return r;
         }
 
+        const getLine = function(direction, idx) {
+          const elts = document
+                .querySelectorAll("[data-"+ direction +"='" + idx + "']")
+          return Array.prototype.slice.call(elts)
+        }
+
         let seq = []
-        const table = document.getElementById('grid')
-        if (coords[0][0] === coords[1][0]){
+
+        if (coords[0].x === coords[1].x) {
           //vertical
-          seq = range(coords[0][1], coords[1][1]).map(function(e) {
-            return table.rows[e].cells[coords[0][0]]
-          })
+          const list = range(coords[0].y, coords[1].y)
+          seq = getLine('x', coords[0].x)
+            .filter(elt => list.includes(elt.dataset.y))
         }
-        else{
+        if (coords[0].y === coords[1].y) {
           //horizontal
-          var row = table.rows[coords[0][1]]
-          seq = range(coords[0][0], coords[1][0]).map(function(e){
-            return row.cells[e]
-          })
+          const list = range(coords[0].x, coords[1].x)
+          seq = getLine('y', coords[0].y)
+            .filter(elt => list.includes(elt.dataset.x))
         }
+
         return seq;
       }
 
@@ -95,12 +102,13 @@ export default {
       }
 
       const store = this.$store;
+      this.coord.push({
+        x: event.target.dataset.x,
+        y: event.target.dataset.y,
+        elt: event.target})
 
-      this.coord.push(
-        [event.target.cellIndex,
-         event.target.parentElement.rowIndex])
       event.target.classList.add("active")
-      snd.playFx(store, "/fx/blop.wav", 0.5)
+      snd.playFx(store, "/fx/blop.wav", 0)
 
       if (this.coord.length == 2) {
         const wordSeq = findWord(this.coord)
@@ -110,11 +118,12 @@ export default {
           wordSeq.forEach(function(e){
             e.classList.remove("active");
             e.classList.add("found");
-            snd.playFx(store, "/fx/woosh.wav", 0.5)
+            snd.playFx(store, "/fx/woosh.wav", 200)
           })
         }else{
           // when word exists in dict add has bonus
           event.target.classList.remove("active");
+          this.coord[0].elt.classList.remove('active');
           wordSeq.forEach(function(e){
             e.classList.remove("active");
           })

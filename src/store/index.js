@@ -32,7 +32,7 @@ const getters = {
 const actions = {
   updateBoard (context) {
     const s = context.getters.size
-    const url = "http://localhost:5000/request?max=" + s + "&min=3&limit="+ (s * 2)
+    const url = "/request?max=" + s + "&min=3&limit="+ (s * 2)
     api.fetchWords(url, words => {
       b
       const board = window.crossword.core.create(words, {"max-length": s})
